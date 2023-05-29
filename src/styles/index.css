@@ -1,0 +1,21 @@
+* {
+  --clr-white: #fffdfa;
+  --clr-darkblue: #00001a;
+  --clr-grey: #5e607a;
+  --clr-lightred: #f15d51;
+  --clr-silver: #c5c6ce;
+  --clr-yellow: #e9aa52;
+
+  --transition-time: 0.2s ease;
+}
+
+html {
+  font-size: 62.5%; /* 10px */
+}
+
+body {
+  position: relative;
+  font-family: "Inter", sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
