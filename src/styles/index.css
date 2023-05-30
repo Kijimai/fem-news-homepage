@@ -9,13 +9,21 @@
   --transition-time: 0.2s ease;
 }
 
+*,
+*::after,
+*::before {
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
+}
+
 html {
   font-size: 62.5%; /* 10px */
 }
 
 body {
   position: relative;
-  font-family: "Inter", sans-serif;
   overflow-x: hidden;
+  font-family: "Inter", sans-serif;
   min-height: 100vh;
 }

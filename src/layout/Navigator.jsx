@@ -1,30 +1,34 @@
 import { Link } from "react-router-dom"
 import styled from "styled-components"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { navLinks } from "../data/data"
-import logo from "../assets/images/logo.svg"
+import Logo from "../components/icons/Logo"
+
 import IconMenu from "../components/icons/IconMenu"
+import IconClose from "../components/icons/IconClose"
 
 const Navigator = () => {
   const [isActive, setIsActive] = useState(null)
-  const [windowSize, setWindowSize] = useState(0)
+  const mobileMenuRef = useRef(null)
 
-  const showSidebar = () => {
-    return setIsActive((prev) => !prev)
+  const closeSidebar = (e) => {
+    const { target } = e
+    e.stopPropagation()
+    if (target === mobileMenuRef.current) {
+      return
+    }
+    return setIsActive(false)
   }
 
-  useEffect(() => {
-
-  }, [])
+  const openSidebar = () => {
+    return setIsActive(true)
+  }
 
   return (
     <Wrapper>
       <div className="logo">
         <Link to="/">
-          <img
-            src={logo}
-            alt="logo of W. the premiere news website for tech."
-          />
+          <Logo />
         </Link>
       </div>
       <div className="navigator-links">
@@ -38,19 +42,32 @@ const Navigator = () => {
             )
           })}
         </ul>
-        <button onClick={showSidebar} className="menu-btn">
+        <button onClick={openSidebar} className="menu-btn">
           <IconMenu />
         </button>
-        <ul className={`mobile-menu ${isActive && "active"}`}>
-          {navLinks.map((item, idx) => {
-            const { url, text } = item
-            return (
-              <li key={idx}>
-                <Link to={url}>{text}</Link>
-              </li>
-            )
-          })}
-        </ul>
+        <div
+          onClick={closeSidebar}
+          className={`overlay ${isActive && "active"}`}
+        >
+          <div
+            ref={mobileMenuRef}
+            className={`mobile-menu ${isActive && "active"}`}
+          >
+            <button onClick={closeSidebar} className="close-btn">
+              <IconClose />
+            </button>
+            <ul className="nav-links">
+              {navLinks.map((item, idx) => {
+                const { url, text } = item
+                return (
+                  <li onClick={closeSidebar} key={idx}>
+                    <Link to={url}>{text}</Link>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        </div>
       </div>
     </Wrapper>
   )
@@ -59,11 +76,13 @@ const Navigator = () => {
 const Wrapper = styled.nav`
   display: flex;
   justify-content: space-between;
+  padding: 2.7rem 1.6rem;
 
   .logo {
   }
 
-  .menu-btn {
+  .menu-btn,
+  .close-btn {
     background-color: transparent;
     border: none;
   }
@@ -82,18 +101,48 @@ const Wrapper = styled.nav`
     display: none !important;
   }
 
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    user-select: none;
+    pointer-events: none;
+    opacity: 0;
+    transition: var(--transition-time) opacity;
+
+    &.active {
+      opacity: 1;
+      user-select: auto;
+      pointer-events: auto;
+    }
+  }
+
   .mobile-menu {
     position: fixed;
     top: 0;
     right: -100%;
     height: 100%;
     width: 70%;
-    background-color: white;
+    z-index: 100;
+    padding: 2.7rem 2.4rem;
+    background-color: var(--clr-white);
     flex-direction: column;
     transition: var(--transition-time) right;
 
     &.active {
       right: 0;
+    }
+
+    .close-btn {
+    }
+
+    .nav-links {
+      flex-direction: column;
+      justify-self: center;
     }
 
     @media only screen and (min-width: 600px) {
