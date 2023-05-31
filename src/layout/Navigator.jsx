@@ -122,6 +122,7 @@ const Wrapper = styled.nav`
   }
 
   .mobile-menu {
+    display: flex;
     position: fixed;
     top: 0;
     right: -100%;
@@ -138,11 +139,15 @@ const Wrapper = styled.nav`
     }
 
     .close-btn {
+      display: inline-block;
+      align-self: flex-end;
     }
 
     .nav-links {
+      margin-top: 8.7rem;
       flex-direction: column;
       justify-self: center;
+      font-size: 1.8rem;
     }
 
     @media only screen and (min-width: 600px) {
